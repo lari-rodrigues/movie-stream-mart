@@ -2,7 +2,7 @@
 This code was created to demonstrate my skills with Python and Spark.
 
 There are two sources of data:
-- Internal data (movies and streams) in CSV format. They simulate external data that could be obtained from a relational database (JDBC connection or CDC tool)
+- Internal data (movies and streams) in CSV format. They simulate data that could be obtained from a relational database (JDBC connection or CDC tool)
 - External data from vendors (authors, books and reviews) in JSON format
 
 Two ETLs were developed to transform these raw data into enriched and processed data for analysis purposes.

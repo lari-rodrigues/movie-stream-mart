@@ -4,7 +4,7 @@ from pyspark.sql.types import StructType
 from delta import DeltaTable
 import logging
 
-from helper.spark_session_builder import SparkSessionBuilder
+from src.helper.spark_session_builder import SparkSessionBuilder
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)

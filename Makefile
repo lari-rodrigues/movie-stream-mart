@@ -7,14 +7,14 @@ venv:
 	python3 --version && python3 -m venv venv
 
 db-migration:
-	python3 src/db-migration/ddl.py
-
-analysis:
-	python3 analysis-phase2.py
+	python3 -m src.db_migration.ddl
 
 execute-etl:
-	python3 src/etl_internal.py && \
-	python3 src/etl_vendor.py
+	python3 -m src.etl_internal && \
+	python3 -m src.etl_vendor
 
 data-quality:
-	python3 data-quality.py
+	python3 -m data-quality
+
+unit-tests:
+	python3 -m pytest src/tests/unit/

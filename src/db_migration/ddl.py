@@ -1,5 +1,5 @@
 from delta import DeltaTable
-from helper.spark_session_builder import SparkSessionBuilder
+from src.helper.spark_session_builder import SparkSessionBuilder
 
 
 def main():
