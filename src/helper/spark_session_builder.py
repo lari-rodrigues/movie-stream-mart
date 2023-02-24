@@ -9,7 +9,7 @@ import os
 class SparkSessionBuilder:
     def __init__(self, warehouse_location: str = None):
         if not warehouse_location:
-            warehouse_location = os.path.join(os.getcwd(), 'spark-warehouse')
+            warehouse_location = os.path.join(os.getcwd(), 'warehouse')
         self._warehouse_location = warehouse_location
 
     def build(self) -> SparkSession:

@@ -14,7 +14,7 @@ def read_csv(name: str, spark: SparkSession) -> DataFrame:
     df = spark.read.format("csv") \
         .option("inferSchema", "true") \
         .option("header", "true") \
-        .load(f"data/internal/{name}.csv")
+        .load(f"{name}.csv")
     return df
 
 
@@ -52,12 +52,12 @@ def persist_table(df: DataFrame, table_name: str):
      )
 
 
-def main():
+def process(movies_path: str, streams_path: str):
     spark = SparkSessionBuilder().build()
 
     # extract
-    df_movies = read_csv("movies", spark)
-    df_streams = read_csv("streams", spark)
+    df_movies = read_csv(movies_path, spark)
+    df_streams = read_csv(streams_path, spark)
 
     # transform
     df_movies = transform_movies_df(df_movies)
@@ -69,4 +69,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    prefix_path = "data/internal"
+    process(movies_path=f"{prefix_path}/movies", streams_path=f"{prefix_path}/streams")

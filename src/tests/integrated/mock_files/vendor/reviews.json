@@ -1,0 +1,92 @@
+[
+    {
+        "content": {
+            "text": "Solitudo magnam vulpes. Aequitas vitium deputo."
+        },
+        "rating": {
+            "rate": 1,
+            "label": "ONE"
+        },
+        "books": [
+            {
+                "id": null,
+                "metadata": {
+                    "title": "A PASSAGE TO INDIA",
+                    "pages": "unknown"
+                }
+            }
+        ],
+        "movies": [
+            {
+                "id": 0,
+                "title": "BEAUTY AND THE BEAST"
+            },
+            {
+                "id": 0,
+                "title": "end"
+            }
+        ],
+        "updated": "2021-12-17T11:49:40.461+0100",
+        "created": "2021-12-02T06:11:35.525+0100"
+    },
+    {
+        "content": {
+            "text": "Adhuc ad velum. Cibus tum desino."
+        },
+        "rating": {
+            "rate": 5,
+            "label": "FIVE"
+        },
+        "books": [
+            {
+                "id": null,
+                "metadata": {
+                    "title": "THE MAN WITHIN",
+                    "pages": "unknown"
+                }
+            }
+        ],
+        "movies": [
+            {
+                "id": 0,
+                "title": "end"
+            },
+            {
+                "id": 0,
+                "title": "STAR WARS: EPISODE VII - THE FORCE AWAKENS"
+            }
+        ],
+        "updated": "2021-12-01T13:58:10.255+0100",
+        "created": "2021-12-19T12:10:58.433+0100"
+    },
+    {
+        "content": {
+            "text": "Tersus velit assentator. Tantillus summa molestiae."
+        },
+        "rating": {
+            "rate": 1,
+            "label": "ONE"
+        },
+        "books": [
+            {
+                "id": null,
+                "metadata": {
+                    "title": "VANITY FAIR",
+                    "pages": "unknown"
+                }
+            }
+        ],
+        "movies": [
+            {
+                "id": 0,
+                "title": "end"
+            },
+            {
+                "id": 0,
+                "title": "THE BIG LEBOWSKI"
+            }
+        ],
+        "updated": "2021-12-27T19:41:35.611+0100",
+        "created": "2021-12-24T18:38:06.107+0100"
+    }
+]

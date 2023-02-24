@@ -1,0 +1,40 @@
+[
+    {
+        "metadata": {
+            "name": "Josh Johnston",
+            "birth_date": "1956-05-07T00:00:00.000+0000",
+            "died_at": null
+        },
+        "nationalities": [
+            {
+                "id": null,
+                "label": "Guianese (French)",
+                "slug": "guianese-french"
+            },
+            {
+                "id": null,
+                "label": "",
+                "slug": null
+            }
+        ]
+    },
+    {
+        "metadata": {
+            "name": "Al Hamill",
+            "birth_date": "2000-06-30T00:00:00.000+0000",
+            "died_at": "2042-08-07T00:00:00.000+0000"
+        },
+        "nationalities": [
+            {
+                "id": null,
+                "label": "",
+                "slug": null
+            },
+            {
+                "id": null,
+                "label": "Armenians",
+                "slug": "armenians"
+            }
+        ]
+    }
+]

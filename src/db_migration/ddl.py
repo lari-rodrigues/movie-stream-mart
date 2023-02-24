@@ -2,7 +2,7 @@ from delta import DeltaTable
 from src.helper.spark_session_builder import SparkSessionBuilder
 
 
-def main():
+def do_migration():
     spark = SparkSessionBuilder().build()
 
     (DeltaTable.createOrReplace(spark)
@@ -59,4 +59,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    do_migration()

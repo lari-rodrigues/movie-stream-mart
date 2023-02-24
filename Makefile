@@ -18,3 +18,6 @@ data-quality:
 
 unit-tests:
 	python3 -m pytest src/tests/unit/
+
+integrated-tests:
+	python3 -m pytest src/tests/integrated/

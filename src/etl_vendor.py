@@ -10,9 +10,9 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
-def read_json(name: str, spark: SparkSession) -> DataFrame:
-    logger.info(f"Starting reading {name} json")
-    df = spark.read.json(f"data/vendor/{name}.json")
+def read_json(path: str, spark: SparkSession) -> DataFrame:
+    logger.info(f"Starting reading {path} json")
+    df = spark.read.option("multiline", "true").json(f"{path}.json")
     return df
 
 
@@ -29,8 +29,8 @@ def flatten(schema, prefix: str = ""):
     return [item for field in schema.fields for item in field_items(field)]
 
 
-def read_and_flat_json_df(name: str, spark: SparkSession) -> DataFrame:
-    df = read_json(name, spark)
+def read_and_flat_json_df(path: str, spark: SparkSession) -> DataFrame:
+    df = read_json(path, spark)
     flattened = flatten(df.schema)
     return df.select(*flattened)
 
@@ -72,75 +72,40 @@ def transform_authors(df_authors: DataFrame) -> DataFrame:
 
 def persist_books(df_books: DataFrame, spark: SparkSession):
     logger.info("Persisting books")
-    delta_books = DeltaTable.forName(spark, "books")
-    (delta_books.alias('books')
-     .merge(df_books.alias('updates'),
-            'books.name = updates.name and books.author = updates.author'
-            ).whenMatchedUpdate(set={
-        "pages": "updates.pages",
-        "publisher": "updates.publisher",
-    }
-    ).whenNotMatchedInsert(values={
-        "author": "updates.author",
-        "name": "updates.name",
-        "pages": "updates.pages",
-        "publisher": "updates.publisher",
-    }
-    ).execute())
+    books_pk = ["name", "author"]
+    (DeltaTable.forName(spark, "books").merge(df_books.alias('df'), 
+                    ' and '.join([f'books.{k} = df.{k}' for k in books_pk]))
+            .whenNotMatchedInsertAll()
+            .whenMatchedUpdateAll()
+            .execute())
 
 
 def persist_reviews(df_reviews: DataFrame, spark: SparkSession):
     logger.info("Persisting reviews")
-    delta_reviews = DeltaTable.forName(spark, "reviews")
-    (delta_reviews.alias('reviews')
-     .merge(df_reviews.alias('updates'),
-            'reviews.movie_title = updates.movie_title and reviews.created_at = updates.created_at'
-            ).whenMatchedUpdate(set={
-        "text": "updates.text",
-        "label": "updates.label",
-        "rate": "updates.rate",
-        "updated_at": "updates.updated_at",
-        "book_name": "updates.book_name",
-    }
-    ).whenNotMatchedInsert(values={
-        "movie_title": "updates.movie_title",
-        "created_at": "updates.created_at",
-        "text": "updates.text",
-        "label": "updates.label",
-        "rate": "updates.rate",
-        "updated_at": "updates.updated_at",
-        "book_name": "updates.book_name",
-    }
-    ).execute())
-
+    authors_pk = ["movie_title", "created_at"]
+    (DeltaTable.forName(spark, "reviews").merge(df_reviews.alias('df'), 
+                    ' and '.join([f'reviews.{k} = df.{k}' for k in authors_pk]))
+            .whenNotMatchedInsertAll()
+            .whenMatchedUpdateAll()
+            .execute())
 
 def persist_authors(df_authors: DataFrame, spark: SparkSession):
     logger.info("Persisting authors")
-    delta_authors = DeltaTable.forName(spark, "authors")
-    (delta_authors.alias('authors')
-     .merge(df_authors.alias('updates'),
-            'authors.name = updates.name'
-            ).whenMatchedUpdate(set={
-        "birth_date": "updates.birth_date",
-        "died_at": "updates.died_at",
-        "nationalities": "updates.nationalities",
-    }
-    ).whenNotMatchedInsert(values={
-        "name": "updates.name",
-        "birth_date": "updates.birth_date",
-        "died_at": "updates.died_at",
-        "nationalities": "updates.nationalities",
-    }
-    ).execute())
+    authors_pk = ["name"]
+    (DeltaTable.forName(spark, "authors").merge(df_authors.alias('df'), 
+                    ' and '.join([f'authors.{k} = df.{k}' for k in authors_pk]))
+            .whenNotMatchedInsertAll()
+            .whenMatchedUpdateAll()
+            .execute())
 
 
-def main():
+def process(authors_path: str, books_path: str, reviews_path: str):
     spark = SparkSessionBuilder().build()
 
     # extract
-    df_authors = read_and_flat_json_df("authors", spark)
-    df_books = read_and_flat_json_df("books", spark)
-    df_reviews = read_and_flat_json_df("reviews", spark)
+    df_authors = read_and_flat_json_df(authors_path, spark)
+    df_books = read_and_flat_json_df(books_path, spark)
+    df_reviews = read_and_flat_json_df(reviews_path, spark)
 
     # transform
     df_books = transform_books(df_books)
@@ -154,4 +119,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    prefix_path = "data/vendor"
+    process(authors_path=f"{prefix_path}/authors", 
+            books_path=f"{prefix_path}/books", 
+            reviews_path=f"{prefix_path}/reviews")
