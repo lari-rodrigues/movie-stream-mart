@@ -28,6 +28,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest
         if [ -f src/requirements.txt ]; then pip install -r src/requirements.txt; fi
-    - name: Test with pytest
+    - name: Unit Test with pytest
       run: |
         python3 -m pytest src/tests/unit/
+    - name: Integrated Test with pytest
+      run: |
+        python3 -m pytest src/tests/integrated/
