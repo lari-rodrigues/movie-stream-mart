@@ -9,3 +9,8 @@ src/venv
 .idea/
 
 .DS_Store
+
+# airflow
+airflow/logs
+
+*.env
